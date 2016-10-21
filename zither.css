@@ -1,0 +1,146 @@
+#zither{
+  clip-path: polygon(5% 5%, 100% 0%, 100% 75%, 75% 75%, 75% 100%, 50% 75%, 0% 75%);
+  /*counter-reset: strings;*/
+}
+.note{
+  width: 0px;
+  /*width: 1px;
+  height: 1px;
+  background: red;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;*/
+  border-radius: 50px;
+  border: 5px solid maroon;
+  /*position: relative;
+  top: 13px;
+  margin-left: 2px;
+  display: inline-block;*/
+  position: relative;
+  top: 1px;
+  margin-right: 20px;
+}
+.crotchet{
+  background:black;
+}
+.minim{
+  background:white;
+}
+
+.string{
+  width: 100%;
+  display: inline-block;
+  white-space: nowrap;
+  max-height: 0px;
+}
+.string .notes{
+  display: flex;
+  height: 5px;
+  /*margin-left: 200px;*/
+}
+.string hr{
+    float:right;
+    margin: 1px;
+}
+
+:root {
+  --st1: 240px;
+  --st2: 220px;
+  --st3: 200px;
+  --st4: 180px;
+  --st5: 160px;
+  --st6: 140px;
+  --st7: 120px;
+  --st8: 100px;
+  --st9: 80px;
+  --st10: 60px;
+  --st11: 40px;
+  --st12: 20px;
+}
+
+#string_1 hr{
+  width:  calc(100% - var(--st1) );
+}
+#string_1 .notes{
+  margin-left: var(--st1) ;
+}
+
+#string_2 hr{
+  width:  calc(100% - var(--st2));
+}
+#string_2 .notes{
+  margin-left: var(--st2) ;
+}
+
+#string_3 hr{
+  width:  calc(100% - var(--st3));
+}
+#string_3 .notes{
+  margin-left: var(--st3) ;
+}
+
+#string_4 hr{
+  width:  calc(100% - var(--st4));
+}
+#string_4 .notes{
+  margin-left: var(--st4) ;
+}
+
+#string_5 hr{
+  width:  calc(100% - var(--st5));
+}
+#string_5 .notes{
+  margin-left: var(--st5) ;
+}
+
+#string_6 hr{
+  width:  calc(100% - var(--st6));
+}
+#string_6 .notes{
+  margin-left: var(--st6) ;
+}
+
+#string_7 hr{
+  width:  calc(100% - var(--st7));
+}
+#string_7 .notes{
+  margin-left: var(--st7) ;
+}
+
+#string_8 hr{
+  width:  calc(100% - var(--st8));
+}
+#string_8 .notes{
+  margin-left: var(--st8) ;
+}
+
+#string_9 hr{
+  width:  calc(100% - var(--st9));
+}
+#string_9 .notes{
+  margin-left: var(--st9) ;
+}
+
+#string_10 hr{
+  width:  calc(100% - var(--st10));
+}
+#string_10 .notes{
+  margin-left: var(--st10) ;
+}
+
+#string_11 hr{
+  width:  calc(100% - var(--st11));
+}
+#string_11 .notes{
+  margin-left: var(--st11) ;
+}
+
+#string_12 hr{
+  width:  calc(100% - var(--st12));
+}
+#string_12 .notes{
+  margin-left: var(--st12) ;
+}
+
+.string hr{
+  /*width: 100% !important*/
+}
