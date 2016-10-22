@@ -114,17 +114,6 @@ function pump(){
     EndpointStyle : { fillStyle: "#567567"  },
     Anchor : [ 0.5, 0.5, 1, 1 ]
   });
-  // firstInstance.importDefaults({
-  //   Connector : [ "Bezier", { curviness: 150 } ],
-  //   Anchors : [ "TopCenter", "BottomCenter" ]
-  // });
-
-
-    // glue.connect({
-    //   source:"note_2",
-    //   target:"note_3",
-    //   scope:"someScope"
-    // });
 }
 
 function add_note(note){
@@ -198,55 +187,10 @@ function calc_offset(active, load, base) {
 
   // for (var i = 0; i != string_amount; i++) {
   node_size = 20
-  load[curr_idx] = bl+ ml + node_size
-
-
+  load[curr_idx] = bl + ml + node_size
   retval = ml - norml + node_size // plus this node
 
   console.log(retval)
 
   return retval
-
-  // off = (max_load-curr_load)*node_size
-  // console.log("Res: ",off);
-  // if(max_load != 0){
-  //   console.log("non-zero");
-  //   if(curr_load == max_load){
-  //     load[curr_idx] = max_load + 1
-  //   }else{
-  //     load[curr_idx] = max_load
-  //   }
-  //   // if(curr_load == 0){
-  //   //   adj = -1
-  //   // }else{
-  //   //   adj = +1
-  //   // }
-  //
-  //
-  //   return node_size*(max_load-curr_load+1)
-  // }else{
-  //   console.log("zero");
-  //   console.log(load);
-  //   load[curr_idx] = 1
-  //   console.log(load);
-  //   return 0
-  // }
-    // Okay Cases
-    // if(below_load != -1 && below_load - current_load > 0){
-    //    curr_load[below_idx] = 0
-    //    curr_load[curr_idx] = 0
-    //    console.log("Offset: ",below_load , current_load)
-    //   //  console.log("Offset: ",(below_load - current_load)*30*(1+0.2*i));
-    //    return (below_load - current_load)*30+0.2*i;
-    // }
-    // if(above_load != -1 && above_load - current_load > 1){
-    //   curr_load[above_idx] = 0
-    //   curr_load[curr_idx] = 0
-    //   console.log("Offset: ",above_load , current_load)
-    //   // console.log("Offset: ",(above_load - current_load)*30*(1+0.2*i))
-    //   return (above_load - current_load)*30;
-    // }
-  // }
-  return 0
-
 }
