@@ -8,23 +8,34 @@ glue = 0
 note_counter = 0
 note_order = []
 string_load=[
-              [0,0,0,0,0,0,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0,0,0,0,0,0]
-            ]
+  240,
+  220,
+  200,
+  180,
+  160,
+  140,
+  120,
+  100,
+  80,
+  60,
+  40,
+  20
+]
+base_load = [
+  240,
+  220,
+  200,
+  180,
+  160,
+  140,
+  120,
+  100,
+  80,
+  60,
+  40,
+  20
+]
+
 
 function vf(){
   VF = Vex.Flow;
@@ -80,10 +91,10 @@ function vf(){
       $(this).attr("stroke","black")
   });
   $(".vf-stavenote").click(function(){
-    for (var x in voice.tickables) {
+    for (var x = 0; x != voice.tickables.length; x++) {
       if(this.id.replace("vf-","") == voice.tickables[x].attrs.id){
         add_note(voice.tickables[x].keys[0])
-        console.log("the note is ", voice.tickables[x].keys[0])
+        // console.log("the note is ", voice.tickables[x].keys[0])
       }
     }
 
@@ -98,7 +109,7 @@ function pump(){
       outlineColor:"black",
       outlineWidth:1
     },
-    Connector:[ "Bezier", { curviness: 3 } ],
+    Connector:[ "Straight"],
     Endpoint:[ "Dot", { radius:1 } ],
     EndpointStyle : { fillStyle: "#567567"  },
     Anchor : [ 0.5, 0.5, 1, 1 ]
@@ -134,7 +145,7 @@ function add_note(note){
   str_num = key_table[note]
   strid = "#string_"+ str_num +" .notes"
   noteid = 'note_'+note_counter
-  $(strid).append('<div class="note crotchet" style="margin-left:'+calc_offset(str_num, string_load)+'px" id="'+noteid+'"></div>')
+  $(strid).append('<div class="note crotchet" style="margin-left:'+calc_offset(str_num, string_load, base_load)+'px" id="'+noteid+'"></div>')
 
   if(note_order.length >= 1){
     previd = note_order[note_order.length -1]
@@ -156,84 +167,86 @@ function add_note(note){
 
 }
 
+function mymax(a, b)  //A = Load values, B = Base values for normalization
+{
+    var m = -Infinity, i = 0, n = a.length;
+    var idx = 0
 
-function calc_offset(active, load) {
-  below_idx = active
+    for (; i != n; ++i) {
+        if (a[i] - b[i] > m) {
+            m = a[i] - b[i];
+            idx = i
+        }
+    }
+
+    return [m, i];
+}
+
+
+function calc_offset(active, load, base) {
   curr_idx = active -1
-  above_idx = active -2
+  string_amount = 12
+  cl = load[curr_idx]
+  bl = base[curr_idx]
+  ml = mymax(load, base);
+  mix = ml[1]
+  ml = ml[0]
 
-  curr_load = load[curr_idx]
+  norml = cl - bl
 
-  //Neighbours +1,-1
-  // <editor-fold> Region
+  console.log("Curr:",cl, " Norm:",norml," Max:",ml, " Base:", bl);
 
-  if(active == 12){
-    below_load = -1
-  }else{
-    below_load = curr_load[below_idx] // Down a string
-  }
-
-  current_load = curr_load[curr_idx]
-
-  if(active == 1){
-    above_load = -1
-  }else{
-    above_load = curr_load[above_idx] // Up a string
-  }
-
-  // Okay Cases
-  if(below_load != -1 && below_load - current_load > 3){
-     curr_load[below_idx] = 0
-     curr_load[curr_idx] = 0
-     console.log("Offset: ",below_load , current_load)
-     console.log("Offset: ",(below_load - current_load)*30);
-     return (below_load - current_load)*30;
-  }
-  if(above_load != -1 && above_load - current_load > 3){
-    curr_load[above_idx] = 0
-    curr_load[curr_idx] = 0
-    console.log("Offset: ",above_load , current_load)
-    console.log("Offset: ",(above_load - current_load)*30)
-    return (above_load - current_load)*30;
-  }
-
-  // </editor-fold>
-
-//Neighbours +2,-2
-  below_idx = active + 1
-  above_idx = active - 3
-
-  if(active >= 11){
-    below_load = -1
-  }else{
-    below_load = curr_load[below_idx] // Down a string
-  }
-
-  current_load = curr_load[curr_idx]
-
-  if(active <= 2){
-    above_load = -1
-  }else{
-    above_load = curr_load[above_idx] // Up a string
-  }
-
-// Okay Cases
-if(below_load != -1 && below_load - current_load > 3){
-   curr_load[below_idx] = 0
-   curr_load[curr_idx] = 0
-   console.log("Offset: ",below_load , current_load)
-   console.log("Offset: ",(below_load - current_load)*30);
-   return (below_load - current_load)*30;
-}
-if(above_load != -1 && above_load - current_load > 3){
-  curr_load[above_idx] = 0
-  curr_load[curr_idx] = 0
-  console.log("Offset: ",above_load , current_load)
-  console.log("Offset: ",(above_load - current_load)*30)
-  return (above_load - current_load)*30;
-}
+  // for (var i = 0; i != string_amount; i++) {
+  node_size = 20
+  load[curr_idx] = bl+ ml + node_size
 
 
-  return 0;
+  retval = ml - norml + node_size // plus this node
+
+  console.log(retval)
+
+  return retval
+
+  // off = (max_load-curr_load)*node_size
+  // console.log("Res: ",off);
+  // if(max_load != 0){
+  //   console.log("non-zero");
+  //   if(curr_load == max_load){
+  //     load[curr_idx] = max_load + 1
+  //   }else{
+  //     load[curr_idx] = max_load
+  //   }
+  //   // if(curr_load == 0){
+  //   //   adj = -1
+  //   // }else{
+  //   //   adj = +1
+  //   // }
+  //
+  //
+  //   return node_size*(max_load-curr_load+1)
+  // }else{
+  //   console.log("zero");
+  //   console.log(load);
+  //   load[curr_idx] = 1
+  //   console.log(load);
+  //   return 0
+  // }
+    // Okay Cases
+    // if(below_load != -1 && below_load - current_load > 0){
+    //    curr_load[below_idx] = 0
+    //    curr_load[curr_idx] = 0
+    //    console.log("Offset: ",below_load , current_load)
+    //   //  console.log("Offset: ",(below_load - current_load)*30*(1+0.2*i));
+    //    return (below_load - current_load)*30+0.2*i;
+    // }
+    // if(above_load != -1 && above_load - current_load > 1){
+    //   curr_load[above_idx] = 0
+    //   curr_load[curr_idx] = 0
+    //   console.log("Offset: ",above_load , current_load)
+    //   // console.log("Offset: ",(above_load - current_load)*30*(1+0.2*i))
+    //   return (above_load - current_load)*30;
+    // }
+  // }
+  return 0
 
 }
